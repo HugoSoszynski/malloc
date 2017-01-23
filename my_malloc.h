@@ -11,6 +11,9 @@
 #ifndef MY_MALLOC_H
 # define MY_MALLOC_H
 
-
-
+typedef struct		s_page
+{
+  int			magic_number;
+  int			nb_page;
+}			t_page;
 #endif /* !PSU_2016_MALLOC_MY_MALLOC_H */
