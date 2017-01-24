@@ -16,24 +16,24 @@ extern void	*g_heap_start;
 typedef struct	s_header
 {
   /*
-   * To be sure to have a correct magic number
-   * this one will be a pointer to the next byte
-   */
+  ** To be sure to have a correct magic number
+  ** this one will be a pointer to the next byte
+  */
   void		*magic_number;
 
   /*
-   * Here we have to choose between
-   * the pointer to the next memory space
-   * or the number of pages allocated for the
-   * current space.
-   *
-   * We may keep both
-   * for execution time optimisation.
-   */
+  ** Here we have to choose between
+  ** the pointer to the next memory space
+  ** or the number of pages allocated for the
+  ** current space.
+  **
+  ** We may keep both
+  ** for execution time optimisation.
+  */
   void		*next;
   void		*prev;
   size_t	nb_page;
   int		is_allocated;
 }		t_header;
 
-#endif /* !PSU_2016_MALLOC_MY_MALLOC_H */
+#endif /* !MY_MALLOC_H */

@@ -25,6 +25,6 @@ void		free(void *space)
     return ;
   }
   header.is_allocated = 0;
-  if (header.next == sbrk(0))
+  if (header.next == NULL)
     brk(space);
 }
