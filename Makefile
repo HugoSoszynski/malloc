@@ -5,7 +5,7 @@
 ## Login   <hugo.soszynski@epitech.eu>
 ## 
 ## Started on  Mon Jan 23 13:30:30 2017 Hugo SOSZYNSKI
-## Last update Mon Jan 23 13:39:20 2017 Hugo SOSZYNSKI
+## Last update Tue Jan 24 16:13:27 2017 Hugo SOSZYNSKI
 ##
 
 CC	= gcc
@@ -13,15 +13,16 @@ CC	= gcc
 RM	= rm -f
 
 CFLAGS	+= -Wextra -Wall -Werror
-#CFLAGS	+= -ggdb3
+CFLAGS	+= -ggdb3
 CFLAGS	+= -I.
-CFLAGS	+= -fPIC
+CFLAGS	+= -fPIC -DPIC
 
 LDFLAGS	=
 
 NAME	= libmy_malloc.so
 
-SRCS	= my_malloc.c
+SRCS	= my_malloc.c \
+	  my_free.c
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -29,7 +30,7 @@ OBJS	= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME) $(LDFLAGS) -shared
+	$(CC) -shared $(OBJS) -o $(NAME) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJS)

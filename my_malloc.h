@@ -11,7 +11,9 @@
 #ifndef MY_MALLOC_H
 # define MY_MALLOC_H
 
-typedef struct	s_page
+extern void	*g_heap_start;
+
+typedef struct	s_header
 {
   /*
    * To be sure to have a correct magic number
@@ -31,6 +33,6 @@ typedef struct	s_page
   void		*next;
   size_t	nb_page;
   int		is_allocated;
-}			t_page;
+}		t_header;
 
 #endif /* !PSU_2016_MALLOC_MY_MALLOC_H */
