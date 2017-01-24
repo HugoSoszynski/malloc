@@ -37,6 +37,7 @@ static void	*heap_start_alloc(size_t size, t_header *header)
     return (NULL);
   header->is_allocated = 1;
   header->next = sbrk(0);
+  header->prev = g_heap_start;
   header->magic_number = space + 1;
   memcpy(space, header, sizeof(t_header));
   return (space);

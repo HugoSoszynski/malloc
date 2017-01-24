@@ -31,6 +31,7 @@ typedef struct	s_header
    * for execution time optimisation.
    */
   void		*next;
+  void		*prev;
   size_t	nb_page;
   int		is_allocated;
 }		t_header;
