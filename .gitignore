@@ -200,3 +200,4 @@ Cmake*
 *test*
 *note*
 !/tests/main.c
+!/tests/moul_malloc_stud
