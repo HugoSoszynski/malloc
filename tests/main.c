@@ -73,13 +73,13 @@ int		main()
   my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");
   write(1, "\n", 1);
 
-  free(lel);
+  free(newmem);
 
   write(1, "End of exec (sbrk(0)) : ", 24);
   my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");
   write(1, "\n", 1);
 
-  free(newmem);
+  free(lel);
 
   write(1, "End of exec (sbrk(0)) : ", 24);
   my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");

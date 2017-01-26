@@ -1,17 +1,43 @@
 /*
-** my_free.c.cpp for PSU_2016_malloc in /home/soszyn_h/rendu/PSU/PSU_2016_malloc/my_free.c.cpp
+** my_free.c for PSU_2016_malloc in /home/soszyn_h/rendu/PSU/PSU_2016_malloc/my_free.c.cpp
 **
 ** Made by Hugo SOSZYNSKI
 ** Login   <hugo.soszynski@epitech.eu>
 **
 ** Started on  Tue Jan 24 13:49:33 2017 Hugo SOSZYNSKI
-** Last update Tue Jan 24 13:49:33 2017 Hugo SOSZYNSKI
+** Last update Thu Jan 26 14:46:51 2017 Hugo SOSZYNSKI
 */
 
 #include	<unistd.h>
 #include	<stdio.h>
 #include	<string.h>
 #include	"my_malloc.h"
+
+void		free_block_concat(void **space, t_header *header)
+{
+  t_header	tmp;
+
+  if (header->prev != NULL)
+  {
+    memcpy(&tmp, header->prev, sizeof(t_header));
+    if (tmp.is_allocated == 0)
+    {
+      tmp.next = header->next;
+      memcpy(header->prev, &tmp, sizeof(t_header));
+      *space = header->prev;
+      memcpy(header, *space, sizeof(t_header));
+    }
+  }
+  if (header->next != NULL)
+  {
+    memcpy(&tmp, header->next, sizeof(t_header));
+    if (tmp.is_allocated == 0)
+    {
+      header->next = tmp.next;
+      memcpy(*space, header, sizeof(t_header));
+    }
+  }
+}
 
 void		free(void *space)
 {
@@ -27,6 +53,8 @@ void		free(void *space)
     return ;
   }
   header.is_allocated = 0;
+  memcpy(space, &header, sizeof(t_header));
+  free_block_concat(&space, &header);
   if (header.next == NULL)
   {
     prev = header.prev;
