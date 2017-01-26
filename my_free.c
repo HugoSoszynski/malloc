@@ -16,6 +16,8 @@
 void		free(void *space)
 {
   t_header	header;
+  t_header	tmp;
+  void		*prev;
 
   space -= sizeof(t_header);
   memcpy(&header, space, sizeof(t_header));
@@ -26,5 +28,14 @@ void		free(void *space)
   }
   header.is_allocated = 0;
   if (header.next == NULL)
+  {
+    prev = header.prev;
+    if (prev != NULL)
+    {
+      memcpy(&tmp, prev, sizeof(t_header));
+      tmp.next = NULL;
+      memcpy(prev, &tmp, sizeof(t_header));
+    }
     brk(space);
+  }
 }

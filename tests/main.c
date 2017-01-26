@@ -59,11 +59,32 @@ int		main()
   write(1, newmem, strlen(newmem));
   write(1, "\n", 1);
 
+  lel = malloc (11);
+  write(1, "LEL : ", 6);
+  my_put_ulnbr_base(lel, "0123456789ABCDEF");
+  write(1, "\n", 1);
+  for (int a = 0; a < 10; a++)
+    lel[a] = '0' + a;
+  lel[10] = '\0';
+  write(1, lel, strlen(lel));
+  write(1, "\n", 1);
+
+  write(1, "End of exec (sbrk(0)) : ", 24);
+  my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");
+  write(1, "\n", 1);
+
+  free(lel);
+
+  write(1, "End of exec (sbrk(0)) : ", 24);
+  my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");
+  write(1, "\n", 1);
+
   free(newmem);
 
   write(1, "End of exec (sbrk(0)) : ", 24);
   my_put_ulnbr_base(sbrk(0), "0123456789ABCDEF");
   write(1, "\n", 1);
+
 
   return (0);
 }
