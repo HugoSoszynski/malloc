@@ -36,4 +36,7 @@ typedef struct	s_header
   int		is_allocated;
 }		t_header;
 
+void		free(void *space);
+void		*malloc(size_t size);
+
 #endif /* !MY_MALLOC_H */

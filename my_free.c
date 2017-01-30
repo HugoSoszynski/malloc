@@ -48,10 +48,7 @@ void		free(void *space)
   space -= sizeof(t_header);
   memcpy(&header, space, sizeof(t_header));
   if (header.magic_number != space + 1)
-  {
-    write(2, "Wrong magic number\n", 19);
     return ;
-  }
   header.is_allocated = 0;
   memcpy(space, &header, sizeof(t_header));
   free_block_concat(&space, &header);

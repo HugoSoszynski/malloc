@@ -5,7 +5,7 @@
 ## Login   <hugo.soszynski@epitech.eu>
 ## 
 ## Started on  Mon Jan 23 13:30:30 2017 Hugo SOSZYNSKI
-## Last update Tue Jan 24 16:13:27 2017 Hugo SOSZYNSKI
+## Last update Mon Jan 30 11:51:09 2017 Hugo SOSZYNSKI
 ##
 
 CC	= gcc
@@ -22,7 +22,8 @@ LDFLAGS	=
 NAME	= libmy_malloc.so
 
 SRCS	= my_malloc.c \
-	  my_free.c
+	  my_free.c \
+	  my_realloc.c
 
 OBJS	= $(SRCS:.c=.o)
 
