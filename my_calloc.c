@@ -20,6 +20,6 @@ void		*calloc(size_t nmemb, size_t size)
   space = malloc(size);
   if (space == NULL)
     return (NULL);
-  memset(space, 0, nmemb);
+  space  = memset(space, 0, nmemb);
   return (space);
 }
