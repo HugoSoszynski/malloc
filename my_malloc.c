@@ -16,14 +16,6 @@
 void		*g_heap_start = NULL;
 
 /*
-** Here are the cases we can encounter :
-** 1. We are at the first alloc or we have nothing allocated
-** 2. Already alloc, no free space, need to allocate at the end
-** 3. Already alloc, free spaces, try to allocate in the free spaces.
-** 	If the size can't fit free spaces, allocate at the end.
-*/
-
-/*
 ** This function is in charge of the allocation at the
 ** beginning of the heap. This append for the first allocation
 ** or if all the allocated memory was freed.
@@ -99,6 +91,9 @@ void		*alloc_heap_end(size_t nb_page, int page_size)
   return (tmp.next);
 }
 
+/*
+** Main malloc function
+*/
 void		*malloc(size_t size)
 {
   void		*space;
@@ -122,4 +117,3 @@ void		*malloc(size_t size)
   }
   return (space + sizeof(t_header));
 }
-
