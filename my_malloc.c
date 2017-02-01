@@ -28,16 +28,12 @@ void		*g_heap_start = NULL;
 ** beginning of the heap. This append for the first allocation
 ** or if all the allocated memory was freed.
 */
-static void	*heap_start_alloc(size_t size)
+static void	*heap_start_alloc(size_t nb_page, int page_size)
 {
   void		*space;
-  int		page_size;
   t_header	header;
 
-  page_size = getpagesize();
-  header.nb_page = (size + sizeof(t_header)) / page_size;
-  if ((size + sizeof(t_header)) % page_size)
-    header.nb_page += 1;
+  header.nb_page = nb_page;
   space = sbrk(header.nb_page * page_size);
   if (space == (void*)(-1))
     return (NULL);
@@ -53,17 +49,11 @@ static void	*heap_start_alloc(size_t size)
 ** This function search for freed space between allocated memory
 ** and return the space find if the space can contain the wanted size.
 */
-static void	*search_free_space(size_t size)
+static void	*search_free_space(size_t nb_page)
 {
   void		*space;
   t_header	header;
-  size_t	nb_page;
-  int		page_size;
 
-  page_size = getpagesize();
-  nb_page = (size + sizeof(t_header)) / page_size;
-  if ((size + sizeof(t_header)) % page_size)
-    nb_page += 1;
   space = g_heap_start;
   while (space != NULL)
   {
@@ -83,21 +73,20 @@ static void	*search_free_space(size_t size)
 ** This function allocate more memory at the end of the
 ** already allocated memory.
 */
-void		*alloc_heap_end(size_t size)
+void		*alloc_heap_end(size_t nb_page, int page_size)
 {
   void		*space;
   t_header	header;
   t_header	tmp;
-  int		page_size;
 
-  page_size = getpagesize();
-  header.nb_page = (size + sizeof(t_header)) / page_size;
-  if ((size + sizeof(t_header)) % page_size)
-    header.nb_page += 1;
+  header.nb_page = nb_page;
   space = g_heap_start;
   memcpy(&tmp, space, sizeof(t_header));
   while (tmp.next != NULL)
-    memcpy(&tmp, tmp.next, sizeof(t_header));
+  {
+    space = tmp.next;
+    memcpy(&tmp, space, sizeof(t_header));
+  }
   tmp.next = sbrk(header.nb_page * page_size);
   if (tmp.next == (void*)(-1))
     return (NULL);
@@ -113,17 +102,23 @@ void		*alloc_heap_end(size_t size)
 void		*malloc(size_t size)
 {
   void		*space;
+  size_t	nb_page;
+  int		page_size;
 
+  page_size = getpagesize();
+  nb_page = (size + sizeof(t_header)) / page_size;
+  if ((size + sizeof(t_header)) % page_size)
+    nb_page += 1;
   if (g_heap_start == NULL || g_heap_start == sbrk(0))
   {
     g_heap_start = sbrk(0);
-    space = heap_start_alloc(size);
+    space = heap_start_alloc(nb_page, page_size);
   }
   else
   {
-    space = search_free_space(size);
+    space = search_free_space(nb_page);
     if (space == NULL)
-      space = alloc_heap_end(size);
+      space = alloc_heap_end(nb_page, page_size);
   }
   return (space + sizeof(t_header));
 }

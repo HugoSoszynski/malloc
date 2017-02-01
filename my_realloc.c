@@ -17,6 +17,7 @@ void		*realloc(void *ptr, size_t size)
 {
   t_header	header;
   void		*space;
+  int		page_size;
 
   if (ptr == NULL)
     return (malloc(size));
@@ -25,15 +26,16 @@ void		*realloc(void *ptr, size_t size)
     free(ptr);
     return (NULL);
   }
+  page_size = getpagesize();
   memcpy(&header, ptr - sizeof(t_header), sizeof(t_header));
   if (header.magic_number != ptr - sizeof(t_header) + 1)
     return (ptr);
-  if (size + sizeof(t_header) < (header.nb_page * getpagesize()))
+  if (size + sizeof(t_header) < (header.nb_page * page_size))
     return (ptr);
   space = malloc(size);
   if (space == NULL)
     return (ptr);
-  memcpy(space, ptr, header.nb_page * getpagesize());
+  memcpy(space, ptr, header.nb_page * page_size);
   free(ptr);
   return (space);
 }

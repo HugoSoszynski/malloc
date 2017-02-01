@@ -23,7 +23,8 @@ NAME	= libmy_malloc.so
 
 SRCS	= my_malloc.c \
 	  my_free.c \
-	  my_realloc.c
+	  my_realloc.c \
+	  my_calloc.c
 
 OBJS	= $(SRCS:.c=.o)
 

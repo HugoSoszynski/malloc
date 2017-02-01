@@ -29,6 +29,10 @@ int                             my_put_ulnbr_base(unsigned long int nb, const ch
   return (count);
 }
 
+void testing()
+{
+
+}
 
 int		main()
 {
