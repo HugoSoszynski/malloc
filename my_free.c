@@ -13,6 +13,23 @@
 #include	<string.h>
 #include	"my_malloc.h"
 
+
+int                             my_put_ulnbr_base(unsigned long int nb, const char *base)
+{
+  int                           count;
+  unsigned long int             base_length;
+
+  count = 0;
+  base_length = strlen(base);
+  if (nb >= base_length)
+    count = my_put_ulnbr_base(nb / base_length, base);
+  write(2, &base[nb % base_length], 1);
+  count += 1;
+  return (count);
+}
+
+
+
 void		free_block_concat(void **space, t_header *header)
 {
   t_header	tmp;
@@ -45,6 +62,8 @@ void		free(void *space)
   t_header	tmp;
   void		*prev;
 
+  if (space == NULL)
+    return ;
   space -= sizeof(t_header);
   memcpy(&header, space, sizeof(t_header));
   if (header.magic_number != space + 1)

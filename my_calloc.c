@@ -9,6 +9,7 @@
 */
 
 #include 	<string.h>
+#include 	<unistd.h>
 #include	"my_malloc.h"
 
 void		*calloc(size_t nmemb, size_t size)
