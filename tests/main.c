@@ -32,15 +32,29 @@ int                             my_put_ulnbr_base(unsigned long int nb, const ch
 
 int		main()
 {
-  int fd;
-  struct stat stats1;
+  int result; // rax@2
+  void* v2; // rax@5
 
-  fd = open("my_malloc.c", O_RDONLY);
-
-  if (fd < 0)
-    return (1);
-
-  fstat(fd, &stats1);
-  close(fd);
+  write(1, "Test 9 : Various Dumb Tests...: ", 32);
+  if ( malloc(0LL) )
+  {
+    write(1, "BITE\n", 5);
+    if ( malloc(0xFFFFFFFFFFFFFFFB) )
+    {
+      result = 0LL;
+    }
+    else
+    {
+      write(1, "BOOB\n", 5);
+      v2 = sbrk(0LL);
+      result = 2;
+    }
+  }
+  else
+  {
+    result = 0LL;
+  }
+  my_put_ulnbr_base(result, "0123456789");
+  write(1, "\n", 1);
   return 0;
 }

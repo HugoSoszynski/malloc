@@ -201,3 +201,4 @@ Cmake*
 *note*
 !/tests/main.c
 !/tests/moul_malloc_stud
+!/my_calloc.c

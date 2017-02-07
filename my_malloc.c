@@ -11,6 +11,7 @@
 #include	<unistd.h>
 #include	<stdio.h>
 #include	<string.h>
+#include	<limits.h>
 #include	"my_malloc.h"
 
 void		*g_heap_start = NULL;
@@ -49,6 +50,8 @@ static void	*search_free_space(size_t nb_page)
   space = g_heap_start;
   while (space != NULL)
   {
+    if ((unsigned long)(sbrk(0) - space) < sizeof(t_header))
+      return (NULL);
     memcpy(&header, space, sizeof(t_header));
     if (header.is_allocated == 0 && header.nb_page >= nb_page)
     {
@@ -100,6 +103,8 @@ void		*malloc(size_t size)
   size_t	nb_page;
   int		page_size;
 
+  if (ULONG_MAX - sizeof(t_header) < size)
+    return (NULL);
   page_size = getpagesize();
   nb_page = (size + sizeof(t_header)) / page_size;
   if ((size + sizeof(t_header)) % page_size)
