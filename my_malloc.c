@@ -80,7 +80,9 @@ void		*alloc_heap_end(size_t nb_page, int page_size)
   while (tmp.next != NULL)
   {
     space = tmp.next;
+//    write(2, "YOLO\n", 5);
     memcpy(&tmp, space, sizeof(t_header));
+//    write(2, "SWAG\n", 5);
   }
   tmp.next = sbrk(header.nb_page * page_size);
   if (tmp.next == (void*)(-1))

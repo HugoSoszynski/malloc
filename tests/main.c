@@ -15,6 +15,8 @@
 #include	<sys/types.h>
 #include	<sys/stat.h>
 #include	<fcntl.h>
+#include	"../my_malloc.h"
+
 int                             my_put_ulnbr_base(unsigned long int nb, const char *base)
 {
   int                           count;
@@ -35,26 +37,33 @@ int		main()
   int result; // rax@2
   void* v2; // rax@5
 
-  write(1, "Test 9 : Various Dumb Tests...: ", 32);
-  if ( malloc(0LL) )
-  {
-    write(1, "BITE\n", 5);
-    if ( malloc(0xFFFFFFFFFFFFFFFB) )
-    {
-      result = 0LL;
-    }
-    else
-    {
-      write(1, "BOOB\n", 5);
-      v2 = sbrk(0LL);
-      result = 2;
-    }
-  }
-  else
-  {
-    result = 0LL;
-  }
-  my_put_ulnbr_base(result, "0123456789");
-  write(1, "\n", 1);
+//  write(1, "Test 9 : Various Dumb Tests...: ", 32);
+//  if ( malloc(0LL) )
+//  {
+//    if ( malloc(0xFFFFFFFFFFFFFFFB) )
+//    {
+//      result = 0LL;
+//    }
+//    else
+//    {
+//      v2 = sbrk(0LL);
+//      result = 2;
+//    }
+//  }
+//  else
+//  {
+//    result = 0LL;
+//  }
+//  my_put_ulnbr_base(result, "0123456789");
+//  write(1, "\n", 1);
+
+  malloc(10);
+
+  v2 = malloc(42);
+
+  malloc(10);
+
+  free(v2);
+
   return 0;
 }
