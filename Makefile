@@ -5,7 +5,7 @@
 ## Login   <hugo.soszynski@epitech.eu>
 ## 
 ## Started on  Mon Jan 23 13:30:30 2017 Hugo SOSZYNSKI
-## Last update Mon Jan 30 11:51:09 2017 Hugo SOSZYNSKI
+## Last update Thu Feb  9 10:30:29 2017 Hugo SOSZYNSKI
 ##
 
 CC	= gcc
@@ -24,7 +24,8 @@ NAME	= libmy_malloc.so
 SRCS	= my_malloc.c \
 	  my_free.c \
 	  my_realloc.c \
-	  my_calloc.c
+	  my_calloc.c \
+	  show_alloc_mem.c
 
 OBJS	= $(SRCS:.c=.o)
 
