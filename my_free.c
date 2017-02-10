@@ -11,8 +11,12 @@
 #include	<unistd.h>
 #include	<stdio.h>
 #include	<string.h>
+#include	<pthread.h>
 #include	"my_malloc.h"
 
+/*
+** This function concat freed blocks
+*/
 void		free_block_concat(void **space, t_header *header)
 {
   t_header	tmp;
@@ -41,30 +45,45 @@ void		free_block_concat(void **space, t_header *header)
   }
 }
 
-void		free(void *space)
+/*
+** This function reduces the unused heap
+*/
+void		reduce_heap(void *space, t_header *header)
 {
-  t_header	header;
   t_header	tmp;
-  void		*prev;
 
-  if (space == NULL)
-    return ;
-  space -= sizeof(t_header);
-  memcpy(&header, space, sizeof(t_header));
-  if (header.magic_number != space + 1)
-    return ;
-  header.is_allocated = 0;
-  memcpy(space, &header, sizeof(t_header));
-  free_block_concat(&space, &header);
-  if (header.next == NULL)
+  if (header->next == NULL)
   {
-    prev = header.prev;
-    if (prev != NULL)
+    if (header->prev != NULL)
     {
-      memcpy(&tmp, prev, sizeof(t_header));
+      memcpy(&tmp, header->prev, sizeof(t_header));
       tmp.next = NULL;
-      memcpy(prev, &tmp, sizeof(t_header));
+      memcpy(header->prev, &tmp, sizeof(t_header));
     }
     brk(space);
   }
+}
+
+void		free(void *space)
+{
+  t_header	header;
+
+  pthread_mutex_lock(&g_mutex);
+  if (space == NULL)
+  {
+    pthread_mutex_unlock(&g_mutex);
+    return ;
+  }
+  space -= sizeof(t_header);
+  memcpy(&header, space, sizeof(t_header));
+  if (header.magic_number != space + 1)
+  {
+    pthread_mutex_unlock(&g_mutex);
+    return ;
+  }
+  header.is_allocated = 0;
+  memcpy(space, &header, sizeof(t_header));
+  free_block_concat(&space, &header);
+  reduce_heap(space, &header);
+  pthread_mutex_unlock(&g_mutex);
 }

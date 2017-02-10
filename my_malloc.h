@@ -11,15 +11,18 @@
 #ifndef MY_MALLOC_H
 # define MY_MALLOC_H
 
-extern void	*g_heap_start;
+# include		<pthread.h>
 
-typedef struct	s_header
+extern void		*g_heap_start;
+extern pthread_mutex_t	g_mutex;
+
+typedef struct		s_header
 {
   /*
   ** To be sure to have a correct magic number
   ** this one will be a pointer to the next byte
   */
-  void		*magic_number;
+  void			*magic_number;
 
   /*
   ** Here we have to choose between
@@ -30,13 +33,13 @@ typedef struct	s_header
   ** We may keep both
   ** for execution time optimisation.
   */
-  void		*next;
-  void		*prev;
-  size_t	nb_page;
-  int		is_allocated;
-}		t_header;
+  void			*next;
+  void			*prev;
+  size_t		nb_page;
+  int			is_allocated;
+}			t_header;
 
-void		free(void *space);
-void		*malloc(size_t size);
+void			free(void *space);
+void			*malloc(size_t size);
 
 #endif /* !MY_MALLOC_H */

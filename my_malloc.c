@@ -12,9 +12,11 @@
 #include	<stdio.h>
 #include	<string.h>
 #include	<limits.h>
+#include	<pthread.h>
 #include	"my_malloc.h"
 
 void		*g_heap_start = NULL;
+pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /*
 ** This function is in charge of the allocation at the
@@ -101,14 +103,16 @@ void		*malloc(size_t size)
   size_t	nb_page;
   int		page_size;
 
-  if (ULONG_MAX - sizeof(t_header) < size)
+  pthread_mutex_lock(&g_mutex);
+  if (LONG_MAX - sizeof(t_header) < size)
+  {
+    pthread_mutex_unlock(&g_mutex);
     return (NULL);
+  }
   page_size = getpagesize();
   nb_page = (size + sizeof(t_header)) / page_size;
   if ((size + sizeof(t_header)) % page_size)
     nb_page += 1;
-  if (LONG_MAX / (unsigned)(page_size) < nb_page)
-    return (NULL);
   if (g_heap_start == NULL || g_heap_start == sbrk(0))
   {
     g_heap_start = sbrk(0);
@@ -120,5 +124,6 @@ void		*malloc(size_t size)
     if (space == NULL)
       space = alloc_heap_end(nb_page, page_size);
   }
+  pthread_mutex_unlock(&g_mutex);
   return (space + sizeof(t_header));
 }
