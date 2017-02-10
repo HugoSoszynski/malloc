@@ -50,10 +50,8 @@ static void	*search_free_space(size_t nb_page)
   space = g_heap_start;
   while (space != NULL)
   {
-    if ((unsigned long)(sbrk(0) - space) < sizeof(t_header))
-      return (NULL);
     memcpy(&header, space, sizeof(t_header));
-    if (header.is_allocated == 0 && header.nb_page >= nb_page)
+    if (header.is_allocated == 0 && header.nb_page > nb_page)
     {
       header.is_allocated = 1;
       memcpy(space, &header, sizeof(t_header));
@@ -80,9 +78,7 @@ void		*alloc_heap_end(size_t nb_page, int page_size)
   while (tmp.next != NULL)
   {
     space = tmp.next;
-//    write(2, "YOLO\n", 5);
     memcpy(&tmp, space, sizeof(t_header));
-//    write(2, "SWAG\n", 5);
   }
   tmp.next = sbrk(header.nb_page * page_size);
   if (tmp.next == (void*)(-1))
@@ -111,6 +107,8 @@ void		*malloc(size_t size)
   nb_page = (size + sizeof(t_header)) / page_size;
   if ((size + sizeof(t_header)) % page_size)
     nb_page += 1;
+  if (LONG_MAX / (unsigned)(page_size) < nb_page)
+    return (NULL);
   if (g_heap_start == NULL || g_heap_start == sbrk(0))
   {
     g_heap_start = sbrk(0);

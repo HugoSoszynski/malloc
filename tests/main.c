@@ -57,11 +57,9 @@ int		main()
 //  my_put_ulnbr_base(result, "0123456789");
 //  write(1, "\n", 1);
 
-  malloc(10);
 
-  v2 = malloc(42);
+  v2 = malloc(-10000);
 
-  malloc(10);
 
   free(v2);
 
