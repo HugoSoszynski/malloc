@@ -103,12 +103,9 @@ void		*malloc(size_t size)
   size_t	nb_page;
   int		page_size;
 
-  pthread_mutex_lock(&g_mutex);
   if (LONG_MAX - sizeof(t_header) < size)
-  {
-    pthread_mutex_unlock(&g_mutex);
     return (NULL);
-  }
+  pthread_mutex_lock(&g_mutex);
   page_size = getpagesize();
   nb_page = (size + sizeof(t_header)) / page_size;
   if ((size + sizeof(t_header)) % page_size)
